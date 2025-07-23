@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form</title>
+  <style>
+    /* styles.css */
+
+/* Reset các thuộc tính mặc định */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Giữ cho body luôn đầy màn hình */
+}
+
+.form-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+input[type="text"], input[type="password"], input[type="tel"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 4px;
+}
+
+button:hover {
+  background-color:  #0056b3;
+}
+
+p {
+  text-align: center;
+  margin-top: 15px;
+  color: #888;
+}
+
+p a {
+  color:#007bff;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Đăng Kí</h2>
+    <form action="/register" method="POST">
+      <label for="fullname">Họ và tên</label>
+      <input type="text" id="fullname" name="fullname" required>
+      
+      <label for="username">Tên đăng nhập</label>
+      <input type="text" id="username" name="username" required>
+      
+      <label for="password">Mật khẩu</label>
+      <input type="password" id="password" name="password" required>
+      
+      <label for="phone">Số điện thoại</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="role">Vai trò</label>
+      <select id="role" name="role" required>
+        <option value="user">Người dùng</option>
+        <option value="admin">Quản trị viên</option>
+      </select>
+      
+      <button type="submit">Đăng ký</button>
+      <p>Đã có tài khoản, vui lòng <a href="/login">Đăng nhập</a></p>
+    </form>
+  </div>
+
+</body>
+</html>

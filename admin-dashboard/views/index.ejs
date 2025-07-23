@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Trang Quản Trị</title>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <h2>Quản Trị</h2>
+      <a href="/">Dashboard</a>
+      <a href="/quanlixe">Quản lý Xe</a>
+      <a href="/car_addresses">Quản lý Điểm Thuê</a>
+      <a href="/user_manager">Quản lý Khách Hàng</a>
+      <a href="/trangchu">Đăng Xuất</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="header">
+      <h1>Tổng Quan</h1>
+      <p>Xin chào, Quản Trị Viên!</p>
+    </div>
+
+    <!-- Overview Cards -->
+    <div class="overview">
+      <div class="card">
+        <h3>Số lượng xe</h3>
+        <p>
+          <%= data.totalCars %>
+        </p>
+      </div>
+      <div class="card">
+        <h3>Điểm cho thuê</h3>
+        <p>
+          <%= data.rentalLocations %>
+        </p>
+      </div>
+      <div class="card">
+        <h3>Đang thuê</h3>
+        <p>
+          <%= data.ongoingRentals %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

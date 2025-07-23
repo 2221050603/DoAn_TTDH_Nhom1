@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/manager.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <title>Quản lý Xe</title>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Quản Trị</h2>
+    <a href="/index">Dashboard</a>
+    <a href="#">Quản lý Xe</a>
+    <a href="/car_addresses">Quản lý Điểm Thuê</a>
+    <a href="/user_manager">Quản lý Khách Hàng</a>
+    <a href="/trangchu">Đăng Xuất</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1 class="title">Quản lý Xe</h1>
+    <button class="add-button" onclick="window.location.href='/cars/add'">Thêm xe mới</button>
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Model</th>
+          <th>Thương hiệu</th>
+          <th>Địa điểm thuê</th>
+          <th>Số ghế</th>
+          <th>Giá theo giờ</th>
+          <th>Giá theo ngày</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cars.forEach(car => { %>
+        <tr>
+          <td><%= car.id %></td>
+          <td><%= car.model %></td>
+          <td><%= car.brand_name %></td>
+          <td><%= car.rental_location %></td>
+          <td><%= car.seat_number %></td>
+          <td><%= car.price_per_hour %></td>
+          <td><%= car.price_per_day %></td>
+          <td>
+            <a href="/cars/edit/<%= car.id %>" class="btn btn-warning">Sửa</a>
+            <form action="/cars/delete/<%= car.id %>" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa xe này?')">
+              <button class="delete-button" type="submit" class="btn btn-danger">Xóa</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('.custom-table').DataTable({
+        "paging": true,        // Bật phân trang
+        "pageLength": 5,      // Số hàng hiển thị mỗi trang
+        "lengthChange": false, // Ẩn menu chọn số hàng mỗi trang
+        "info": false          // Ẩn thông tin tổng số bản ghi
+      });
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!-- views/list-addresses.ejs -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Danh Sách Địa Chỉ</title>
+  <!-- Thêm các thư viện cần thiết -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+  <style>
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .custom-table th, .custom-table td {
+      text-align: left;
+      padding: 12px;
+      border: 1px solid #ddd;
+    }
+    .custom-table th {
+      background-color: #007bff;
+      color: white;
+    }
+    .custom-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .custom-table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* Chỉnh kiểu cho các nút */
+button.btn {
+  padding: 10px 20px; /* Tăng kích thước padding cho nút */
+  font-size: 16px; /* Tăng kích thước chữ */
+  border-radius: 5px; /* Bo góc nút */
+  cursor: pointer; /* Khi di chuột vào nút sẽ có hình bàn tay */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+  border: none; /* Xóa viền mặc định */
+  display: inline-block; /* Đảm bảo các nút hiển thị theo dạng hàng ngang */
+}
+
+/* Màu nền của nút khi mặc định */
+button.btn-success {
+  background-color: #28a745; /* Màu xanh lá */
+  color: white; /* Màu chữ trắng */
+}
+
+button.btn-success:hover {
+  background-color: #218838; /* Màu xanh đậm khi hover */
+}
+
+/* Thêm khoảng cách cho các nút */
+button.btn + button.btn {
+  margin-left: 10px; /* Tạo khoảng cách giữa các nút */
+}
+
+/* Chỉnh khoảng cách cho khối chứa nút */
+a {
+  text-decoration: none; /* Xóa gạch dưới */
+  margin: 12px 0;
+}
+
+a.btn-container {
+  display: inline-block; /* Đảm bảo các nút hiển thị theo dạng hàng ngang */
+  margin-right: 10px; /* Khoảng cách giữa các nút */
+  text-decoration: none; /* Xóa gạch dưới */
+}
+
+.btn-danger{
+  color: #000;
+  background-color: #f34141;
+}
+.btn-danger:hover{
+  background-color: #ee2c2c;
+
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>Danh Sách Địa Chỉ</h1>
+
+  <!-- Bảng hiển thị danh sách địa chỉ -->
+  <table id="addressTable" class="custom-table">
+    <thead>
+      <a href="/add_address_form" class="btn-container">
+        <button type="button" class="btn btn-success">Thêm Cửa Hàng</button>
+      </a><br>
+      <a href="/car_addresses" class="btn-container">
+        <button type="button" class="btn btn-success">Trở lại</button>
+      </a>
+      <tr>
+        <th>ID</th>
+        <th>Địa Chỉ</th>
+        <th>Tên</th>
+        <th>Vĩ Độ</th>
+        <th>Kinh Độ</th>
+        <th>Số Điện Thoại</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Lặp qua từng địa chỉ và hiển thị -->
+      <% carAddresses.forEach(address => { %>
+        <tr>
+          <td><%= address.id %></td>
+          <td><%= address.address %></td>
+          <td><%= address.name %></td>
+          <td><%= address.lat %></td>
+          <td><%= address.long %></td>
+          <td><%= address.phone_number %></td>
+          <td>
+            <a href="/edit_address/<%= address.id %>" class="btn btn-warning">Sửa</a>
+            <form action="/delete_address/<%= address.id %>" method="POST" style="display:inline;">
+              <button class="btn btn-danger" type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này không?')">Xóa</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <!-- Thêm thư viện jQuery và DataTables -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Kích hoạt DataTable để có phân trang và tìm kiếm
+      $('#addressTable').DataTable({
+        paging: true,   // Phân trang
+        pageLength: 5,  // Mỗi trang hiển thị 5 địa chỉ
+        lengthChange: false,  // Không cho phép thay đổi số lượng hiển thị trên mỗi trang
+        info: false,    // Không hiển thị thông tin tổng số trang
+      });
+    });
+  </script>
+
+</body>
+</html>
