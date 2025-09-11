@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="/css/edit.css">
+<form action="/cars/edit/<%= car.id %>" method="POST">
+    <div class="model">
+      <label for="model" class="form-label">Mẫu xe</label>
+      <select name="model" id="model" class="form-control" required>
+        <option value="<%= car.model %>" selected><%= car.model %></option>
+        <option value="Mazda 3">Mazda 3</option>
+        <option value="Mazda CX-8">Mazda CX-8</option>
+        <option value="Mazda CX-9">Mazda CX-9</option>
+        <option value="Honda Civic">Honda Civic</option>
+      </select>
+    </div>
+  
+    <div class="rental-address">
+      <label for="rental_address" class="form-label">Địa chỉ cho thuê</label>
+      <input type="text" name="rental_address" id="rental_address" class="form-control" value="<%= car.rental_location %>" required />
+    </div>
+  
+    <div class="brand">
+      <label for="car_brand_id" class="form-label">Thương hiệu xe</label>
+      <select name="car_brand_id" id="car_brand_id" class="form-control" required>
+        <% carBrands.forEach(brand => { %>
+          <option value="<%= brand.id %>" <%= car.car_brand_id === brand.id ? 'selected' : '' %>><%= brand.name %></option>
+        <% }) %>
+      </select>
+    </div>
+  
+    <div class="seats">
+      <label for="seats_id" class="form-label">Số ghế</label>
+      <select name="seats_id" id="seats_id" class="form-control" required>
+        <% seats.forEach(seat => { %>
+          <option value="<%= seat.id %>" <%= car.seats_id === seat.id ? 'selected' : '' %>><%= seat.seats %></option>
+        <% }) %>
+      </select>
+    </div>
+  
+    <div class="price-per-hour">
+      <label for="price_per_hour" class="form-label">Giá theo giờ</label>
+      <input type="number" name="price_per_hour" id="price_per_hour" class="form-control" value="<%= car.price_per_hour %>" required />
+    </div>
+  
+    <div class="price-per-day">
+      <label for="price_per_day" class="form-label">Giá theo ngày</label>
+      <input type="number" name="price_per_day" id="price_per_day" class="form-control" value="<%= car.price_per_day %>" required />
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+  </form>
+  

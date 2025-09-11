@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="/css/add.css">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thêm Cửa Hàng</title>
+</head>
+<body>
+  <h1>Thêm Cửa Hàng</h1>
+  <form action="/add_address" method="POST">
+    <div>
+      <label for="address">Địa chỉ:</label>
+      <input type="text" id="address" name="address" required>
+    </div>
+    <div>
+        <label for="storeName">Tên điểm thuê:</label>
+        <input type="text" id="storeName" name="storeName" required>
+      </div>
+    <div>
+      <label for="lat">Vĩ độ:</label>
+      <input type="text" id="lat" name="lat" required>
+    </div>
+    <div>
+      <label for="long">Kinh độ:</label>
+      <input type="text" id="long" name="long" required>
+    </div>
+    <div>
+      <label for="phone_number">Số điện thoại:</label>
+      <input type="text" id="phone_number" name="phone_number" required>
+    </div>
+    <div>
+      <button type="submit">Thêm Cửa Hàng</button>
+    </div>
+  </form>
+</body>
+</html>

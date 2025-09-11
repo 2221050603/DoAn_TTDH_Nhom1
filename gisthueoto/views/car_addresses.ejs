@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>Trang Quản Trị</title>
+  <!-- Thêm Bootstrap Icons CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <style>
+    body {
+      /* display: flex; */
+
+      /* height: 100vh; */
+      box-shadow: 0;
+
+    }
+    .admin {
+      display: flex;
+      height:740px;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #333;
+      color: white;
+      padding: 20px;
+      height: 737px;
+      box-sizing: border-box;
+    }
+
+    .content {
+      /* flex-grow: 1; */
+      /* margin-top: 40px; */
+      display: flex;
+
+    }
+
+    .menu {
+      margin-right: 0;
+      padding-right: 0;
+    }
+
+    .navbar1 {
+      width: 275px;
+      margin-top: 2px;
+      margin-left: 5px;
+      margin-right: auto;
+      /* Giữ vị trí bản đồ cân đối */
+      border: 2px solid #000;
+      /* Tạo viền màu đen cho bản đồ */
+      border-radius: 10px;
+      /* Bo tròn các góc viền */
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      /* Đổ bóng cho bản đồ */
+    }
+
+    .searchInput {
+
+      top: 0;
+      margin-top: 10px;
+    }
+
+    .sreach {
+      display: flex;
+      margin-top: 8px;
+    }
+
+    #map {
+
+      margin-right: 0;
+      height: 690px;
+      /* Thu nhỏ chiều cao */
+      width: 1000px;
+      /* Thu nhỏ chiều rộng về bên phải */
+      /* margin-left: 52px; */
+      position: relative;
+      z-index: 0;
+    }
+
+    .btn1 {
+      color: white;
+      background-color: rgb(171, 222, 244);
+      text-transform: none;
+    }
+
+    .btn1 :hover {
+      color: white;
+      text-transform: none;
+    }
+
+    origin {
+      position: absolute;
+      margin-left: 2px;
+
+    }
+    .title {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .add-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .add-button:hover {
+    background-color: #218838;
+  }
+  
+  /* Bảng */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    text-align: left;
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+  
+  .custom-table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .custom-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .custom-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Nút hành động */
+  .edit-button,
+  .delete-button {
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .edit-button {
+    background-color: #ffc107;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-button:hover {
+    background-color: #e0a800;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .delete-button:hover {
+    background-color: #c82333;
+  }
+  .list p {
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="admin">
+    <div class="sidebar">
+      <h2>Quản Trị</h2>
+      <a href="/index">Dashboard</a>
+      <a href="/quanlixe">Quản lý Xe</a>
+      <a href="#">Quản lý Điểm Thuê</a>
+      <a href="/user_manager">Quản lý Khách Hàng</a>
+      <a href="/trangchu">Đăng Xuất</a>
+    </div>
+    <div class="menu">
+      <marquee behavior="" direction="" style="font-size: 25px;"> <i class="fa-solid fa-car"></i> Chúc bạn có một chuyến
+        trải nghiệm thật thú vị cùngvới
+        dịch vụ của chúng tôi <i class="fa-solid fa-car"></i> </marquee>
+      <!-- Phần nội dung chứa bản đồ -->
+      <div class="content">
+
+        <div class="navbar1">
+          <h5 style="margin: 10px ;color: rgb(105, 124, 9); ">Tìm địa chỉ : </h5>
+          <div class="sreach">
+            <input type="text" id="searchInput" placeholder="nhập name or address" class="form-control"
+              style=" margin: 5px  ;">
+            <!-- Nút button với icon search -->
+            <button onclick="searchFeatures()" style="margin-top: 5px; margin-right: 2px; height: 39px;"
+              class="btn btn-primary">
+              <i class="bi bi-search"></i> <!-- Icon search -->
+            </button>
+
+          </div>
+          <hr style="margin-bottom: 3px;">
+          <button style="height: 35px;margin-left: 5px; margin-bottom: 5px;" class="btn btn-info" id="nearestButton"
+            onclick="document.querySelector('#origin').value = 'Vị trí hiện tại'">Vị trí gần nhất </button>
+          <br>
+
+
+          <h5 style="color: black;background-color: aquamarine; ">Tìm xe : </h5>
+          <form action="/search" method="POST" style="margin-left:3px ;">
+            <!-- Dropdown loại ghế -->
+            <label for="seat_id">Loại xe:</label>
+            <select name="seat_id" id="seat_id" style="width: 200px;">
+              <option value="">All</option>
+              <% seats.forEach(seat=> { %>
+                <option value="<%= seat.id %>">
+                  <%= seat.seats %>
+                </option>
+                <% }); %>
+            </select>
+            <br>
+            <!-- Dropdown hãng xe -->
+            <label for="car_brand_id">Hãng xe:</label>
+            <select name="car_brand_id" id="car_brand_id" style="width: 190px;">
+              <option value="">All</option>
+              <% carBrands.forEach(brand=> { %>
+                <option value=" <%=brand.id %>">
+                  <%= brand.name %>
+                </option>
+                <% }); %>
+            </select>
+
+            <!-- Dropdown xe --> <br>
+            <label for="car_id">Dòng xe:</label>
+            <select name="car_id" id="car_id">
+              <option value="">All</option>
+              <% cars.forEach(car=> { %>
+                <option value="<%= car.id %>">
+                  <%= car.model %>
+                </option>
+                <% }); %>
+            </select>
+
+            <button type="submit" class="btn btn-info">Search</button>
+          </form>
+
+
+          <a href="/list_addresses"><button type="button" class="btn btn-success" style="margin: 5px 0 0 5px;"> Danh
+              sách địa chỉ </button></a>
+          <h5 style="margin: 10px ;color: black; ">Kết quả : </h5>
+          <div class="results" style="height: 250px; overflow-y: scroll; margin-left: 2px;">
+            <div class="results ">
+              <% if (results && results.length> 0) { %>
+                <div class="list-group">
+                  <% results.forEach(result=> { %>
+                    <div class="list">
+                      <hr style="margin: 0px;">
+                      <p><strong>Loại xe:</strong>
+                        <%= result.seat_number %>
+                      </p>
+                      <p><strong>Hãng xe:</strong>
+                        <%= result.brand_name %>
+                      </p>
+
+                      <p><strong>Dòng xe:</strong>
+                        <%= result.model %>
+                      </p>
+                      <p><strong>Giá :</strong>
+                        <%= result.price_per_hour %> /giờ (VND) <br>
+                          <%= result.price_per_day %>/ngày (VND)
+                      </p>
+
+                      <p><strong>Cửa hàng:</strong>
+                        <%= result.store_name %>
+                      </p>
+                      <p><strong>Địa chỉ:</strong>
+                        <%= result.store_address %>
+                      </p>
+                      <p><strong>Số điện thoại:</strong>
+                        <%= result.store_phone %>
+                      </p>
+                      <button class="btn btn-primary" onclick="zoomToLocation(<%= result.lat %>, <%= result.long %>)">
+                        Cửa hàng
+                      </button>
+                    </div>
+                    <% }); %>
+
+                </div>
+                <% } else { %>
+                  <p class="text-center text-danger">Không tìm thấy kết quả nào.</p>
+                  <% } %>
+            </div>
+          </div>
+          <br>
+        </div>
+        <div id="map"></div>
+      </div>
+    </div>
+   
+    <button id="getLocationButton" onclick="userLocation()"
+      style="position: absolute;left: 350px;top: 15px;margin-top: 39px; z-index: 1; margin-left: 240px;"
+      class="btn btn-info">Vị trí của bạn</button>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+  <script>
+    var map = L.map('map').setView([21.076256688855846, 105.77675095504081], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Lưu trữ các marker
+    let markers = [];
+
+    // Fetch dữ liệu từ server và hiển thị các địa điểm lên bản đồ
+    fetch('/api/locations')
+      .then(response => response.json())
+      .then(data => {
+        let allLatitudes = [];
+        let allLongitudes = [];
+
+        data.forEach(location => {
+          const { lat, long, name, address, phone_number, id } = location;
+
+          // Thêm marker vào bản đồ
+          const marker = L.marker([lat, long])
+            .addTo(map)
+            .bindPopup(`<b>${name}</b><br>${address}<br>Vĩ độ: ${lat}<br>Kinh độ: ${long}<br>SĐT: ${phone_number}<br>  
+          <button onclick="findPath(${lat}, ${long})" style="margin-left: 5px;margin-top: 8px" class="btn btn-primary">Tìm đường</button> <button onclick="findPath(${lat}, ${long})" style="margin-left: 5px;margin-top: 8px" class="btn btn-primary"><a class="cua_hang" href="/order/${id}" style="text-transform: none; color:white;">Cửa hàng </a></button>`);
+
+
+          // Lưu trữ marker kèm theo thông tin
+          markers.push({ marker, name: name.toLowerCase(), address: address.toLowerCase(), lat, long });
+
+          // Lưu các giá trị vĩ độ và kinh độ vào mảng
+          allLatitudes.push(lat);
+          allLongitudes.push(long);
+        });
+
+        // Tính toán trung tâm của tất cả các địa điểm
+        const centerLat = (Math.min(...allLatitudes) + Math.max(...allLatitudes)) / 2;
+        const centerLng = (Math.min(...allLongitudes) + Math.max(...allLongitudes)) / 2;
+
+        // Di chuyển bản đồ đến trung tâm của tất cả các địa điểm và zoom vào
+        map.flyTo([centerLat, centerLng], 15); // 13 là mức zoom có thể thay đổi tùy theo độ gần
+      })
+      .catch(err => console.error('Lỗi khi lấy dữ liệu:', err));
+
+      // zoom đến cửa hàng 
+  function zoomToLocation(lat, long, name, address, phone_number, id) {
+    if (!lat || !long) {
+      alert('Vị trí không hợp lệ!');
+      return;
+    }
+    map.flyTo([lat, long], 18); // Zoom đến vị trí cụ thể
+    const marker = L.marker([lat, long, name, address, phone_number, id])
+      .addTo(map)
+      .bindPopup(`<b>${name}</b><br>${address}<br>Vĩ độ: ${lat}<br>Kinh độ: ${long}<br>SĐT: ${phone_number}<br>  
+          <button onclick="findPath(${lat}, ${long})" style="margin-left: 5px;margin-top: 8px" class="btn btn-primary">Tìm đường</button> <button onclick="findPath(${lat}, ${long})" style="margin-left: 5px;margin-top: 8px" class="btn btn-primary"><a class="cua_hang" href="/order/${id}" style="text-transform: none; color:white;">Cửa hàng </a></button>`);
+    marker.openPopup();
+  }
+
+    // Hàm tìm kiếm đối tượng và di chuyển đến vị trí của đối tượng
+    function searchFeatures() {
+      const searchInput = document.getElementById('searchInput');
+      const searchText = searchInput.value.trim().toLowerCase();
+
+      // Kiểm tra nếu có thông tin tìm kiếm
+      if (searchText === '') {
+        alert('Vui lòng nhập tên hoặc địa chỉ cần tìm.');
+        return;
+      }
+
+      // Lọc các marker theo tên hoặc địa chỉ
+      const foundMarkers = markers.filter(marker =>
+        marker.name.includes(searchText) || marker.address.includes(searchText)
+      );
+
+      if (foundMarkers.length > 0) {
+        // Di chuyển bản đồ đến vị trí của marker đầu tiên tìm thấy
+        const firstFoundMarker = foundMarkers[0];
+        map.flyTo([firstFoundMarker.lat, firstFoundMarker.long], 18); // Di chuyển bản đồ đến vị trí của marker
+
+        // Mở popup của marker đầu tiên
+        firstFoundMarker.marker.openPopup();
+      } else {
+        alert('Không tìm thấy kết quả phù hợp!');
+      }
+    }
+
+    // Khai báo biến toàn cục để lưu trữ đối tượng chỉ đường
+    let currentRoute = null;
+
+    // Hàm tìm đường từ vị trí người dùng đến một địa điểm (marker)
+    function findPath(destinationLat, destinationLng) {
+      if (userLat && userLng) {
+        // Nếu có chỉ đường hiện tại, xóa nó trước khi tạo chỉ đường mới
+        if (currentRoute) {
+          map.removeControl(currentRoute); // Xóa chỉ đường cũ
+        }
+
+        // Tạo đường đi từ vị trí người dùng đến địa điểm đã chọn
+        currentRoute = L.Routing.control({
+          waypoints: [
+            L.latLng(userLat, userLng), // Vị trí người dùng
+            L.latLng(destinationLat, destinationLng) // Vị trí địa điểm
+          ],
+          routeWhileDragging: true
+        }).addTo(map);
+
+        // Zoom vào cả điểm đầu và điểm cuối sau khi tạo chỉ đường
+        const bounds = L.latLngBounds(
+          L.latLng(userLat, userLng),
+          L.latLng(destinationLat, destinationLng)
+        );
+        map.fitBounds(bounds);  // Tự động zoom và căn chỉnh bản đồ để bao gồm cả 2 điểm
+      } else {
+        console.error("Vị trí người dùng chưa được xác định. Vui lòng đảm bảo đã cấp quyền truy cập vị trí.");
+      }
+    }
+
+    // Lấy vị trí người dùng
+    let userLat, userLng; // Biến lưu vị trí người dùng
+
+    function userLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getLocation, handleError);
+      } else {
+        console.error("Trình duyệt của bạn không hỗ trợ Geolocation.");
+      }
+
+      function getLocation(position) {
+        userLat = position.coords.latitude; // Lấy vĩ độ
+        userLng = position.coords.longitude; // Lấy kinh độ
+
+        // Di chuyển bản đồ đến vị trí của người dùng
+        map.flyTo([userLat, userLng], 15);
+
+        // Thêm marker vào vị trí hiện tại của người dùng
+        L.marker([userLat, userLng], {
+          icon: L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+          })
+        }).addTo(map).bindPopup("Vị trí của bạn: <br>" + userLat.toFixed(6) + ", " + userLng.toFixed(6)).openPopup();
+      }
+
+      function handleError(err) {
+        switch (err.code) {
+          case 1:
+            console.error("Vui lòng cho phép truy cập vị trí để tiếp tục.");
+            break;
+          case 2:
+            console.error("Không thể lấy được vị trí của bạn. Vui lòng kiểm tra kết nối.");
+            break;
+          case 3:
+            console.error("Yêu cầu lấy vị trí bị timeout.");
+            break;
+          default:
+            console.error("Đã xảy ra lỗi không xác định.");
+        }
+      }
+    }
+
+
+    // Hàm tính khoảng cách giữa hai tọa độ (sử dụng công thức Haversine)
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+      const R = 6371; // Bán kính Trái Đất (km)
+      const dLat = ((lat2 - lat1) * Math.PI) / 180;
+      const dLng = ((lng2 - lng1) * Math.PI) / 180;
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c; // Khoảng cách (km)
+    }
+
+    // Hàm tìm điểm gần nhất và vẽ đường
+    function findNearestAndPath() {
+      if (!userLat || !userLng) {
+        console.error("Vị trí người dùng chưa được xác định.");
+        return;
+      }
+
+      // Tìm điểm gần nhất
+      let nearestMarker = null;
+      let minDistance = Infinity;
+
+      markers.forEach(({ lat, long }) => {
+        const distance = calculateDistance(userLat, userLng, lat, long);
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestMarker = { lat, long };
+        }
+      });
+
+      if (nearestMarker) {
+        // Nếu có chỉ đường hiện tại, xóa nó trước khi tạo chỉ đường mới
+        if (currentRoute) {
+          map.removeControl(currentRoute);
+        }
+
+        // Vẽ đường từ vị trí người dùng đến điểm gần nhất
+        currentRoute = L.Routing.control({
+          waypoints: [
+            L.latLng(userLat, userLng), // Vị trí người dùng
+            L.latLng(nearestMarker.lat, nearestMarker.long) // Điểm gần nhất
+          ],
+          routeWhileDragging: true
+        }).addTo(map);
+
+        // Zoom vào cả điểm đầu và điểm cuối
+        const bounds = L.latLngBounds(
+          L.latLng(userLat, userLng),
+          L.latLng(nearestMarker.lat, nearestMarker.long)
+        );
+        map.fitBounds(bounds); // Tự động zoom để hiển thị cả 2 điểm
+      } else {
+        console.error("Không tìm thấy điểm gần nhất.");
+      }
+    }
+
+    // Lấy vị trí người dùng ngay khi trang được tải
+    function userLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getLocation, handleError);
+      } else {
+        console.error("Trình duyệt của bạn không hỗ trợ Geolocation.");
+      }
+
+      function getLocation(position) {
+        userLat = position.coords.latitude; // Lấy vĩ độ
+        userLng = position.coords.longitude; // Lấy kinh độ
+
+        // Di chuyển bản đồ đến vị trí của người dùng
+        map.flyTo([userLat, userLng], 15);
+
+        // Thêm marker vào vị trí hiện tại của người dùng
+        L.marker([userLat, userLng], {
+          icon: L.icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+          })
+        }).addTo(map).bindPopup("Vị trí của bạn: <br>" + userLat.toFixed(6) + ", " + userLng.toFixed(6)).openPopup();
+      }
+
+      function handleError(err) {
+        switch (err.code) {
+          case 1:
+            console.error("Vui lòng cho phép truy cập vị trí để tiếp tục.");
+            break;
+          case 2:
+            console.error("Không thể lấy được vị trí của bạn. Vui lòng kiểm tra kết nối.");
+            break;
+          case 3:
+            console.error("Yêu cầu lấy vị trí bị timeout.");
+            break;
+          default:
+            console.error("Đã xảy ra lỗi không xác định.");
+        }
+      }
+
+
+
+    }
+
+    // Gọi hàm userLocation ngay khi trang được tải
+    userLocation();
+
+    // Thêm sự kiện cho nút "Gần nhất"
+    document.getElementById("nearestButton").addEventListener("click", findNearestAndPath);
+
+
+    // Gọi hàm userLocation ngay khi trang được tải
+    userLocation();
+
+  </script>
+
+
+</body>
+
+</html>

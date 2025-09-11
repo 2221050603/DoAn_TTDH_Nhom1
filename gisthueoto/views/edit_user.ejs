@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa thông tin người dùng</title>
+    <link rel="stylesheet" href="/css/edit.css">
+</head>
+<body>
+    <h1>Sửa thông tin người dùng</h1>
+    <form action="/edit_user/<%= user.id %>" method="POST">
+        <label for="fullname">Họ tên:</label>
+        <input type="text" id="fullname" name="fullname" value="<%= user.fullname %>" required><br><br>
+
+        <label for="username">Tên đăng nhập:</label>
+        <input type="text" id="username" name="username" value="<%= user.username %>" required><br><br>
+
+        <label for="password">Mật khẩu:</label>
+        <input type="password" id="password" name="password" value="<%= user.password %>" required><br><br>
+
+        <label for="phone">Số điện thoại:</label>
+        <input type="text" id="phone" name="phone" value="<%= user.phone %>" required><br><br>
+
+        <label for="role">Vai trò:</label>
+        <select id="role" name="role" required>
+            <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+            <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
+        </select><br><br>
+
+        <button type="submit">Cập nhật</button>
+    </form>
+    <br>
+    <a href="/user_manager">Trở về danh sách người dùng</a>
+</body>
+</html>
