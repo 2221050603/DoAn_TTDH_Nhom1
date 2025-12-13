@@ -95,8 +95,6 @@ a.btn-container {
         <th>ID</th>
         <th>Địa Chỉ</th>
         <th>Tên</th>
-        <th>Vĩ Độ</th>
-        <th>Kinh Độ</th>
         <th>Số Điện Thoại</th>
         <th>Action</th>
       </tr>
@@ -108,8 +106,6 @@ a.btn-container {
           <td><%= address.id %></td>
           <td><%= address.address %></td>
           <td><%= address.name %></td>
-          <td><%= address.lat %></td>
-          <td><%= address.long %></td>
           <td><%= address.phone_number %></td>
           <td>
             <a href="/edit_address/<%= address.id %>" class="btn btn-warning">Sửa</a>
@@ -122,18 +118,16 @@ a.btn-container {
     </tbody>
   </table>
 
-  <!-- Thêm thư viện jQuery và DataTables -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
   <script>
     $(document).ready(function () {
-      // Kích hoạt DataTable để có phân trang và tìm kiếm
       $('#addressTable').DataTable({
-        paging: true,   // Phân trang
-        pageLength: 5,  // Mỗi trang hiển thị 5 địa chỉ
-        lengthChange: false,  // Không cho phép thay đổi số lượng hiển thị trên mỗi trang
-        info: false,    // Không hiển thị thông tin tổng số trang
+        paging: true,   
+        pageLength: 5,  
+        lengthChange: false,  
+        info: false,    
       });
     });
   </script>

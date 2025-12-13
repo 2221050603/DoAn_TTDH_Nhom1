@@ -10,28 +10,63 @@
   <h1>Thêm Cửa Hàng</h1>
   <form action="/add_address" method="POST">
     <div>
-      <label for="address">Địa chỉ:</label>
-      <input type="text" id="address" name="address" required>
+        <label>Địa chỉ:</label>
+        <input type="text" id="address" name="address" required>
+        <button type="button" class="btn" onclick="geocodeAddress()">Lấy tọa độ</button>
     </div>
+    
     <div>
         <label for="storeName">Tên điểm thuê:</label>
         <input type="text" id="storeName" name="storeName" required>
-      </div>
-    <div>
-      <label for="lat">Vĩ độ:</label>
-      <input type="text" id="lat" name="lat" required>
     </div>
+    
     <div>
-      <label for="long">Kinh độ:</label>
-      <input type="text" id="long" name="long" required>
+        <label for="lat">Vĩ độ:</label>
+        <input type="text" id="lat" name="lat" required>
     </div>
+    
     <div>
-      <label for="phone_number">Số điện thoại:</label>
-      <input type="text" id="phone_number" name="phone_number" required>
+        <label for="long">Kinh độ:</label>
+        <input type="text" id="long" name="long" required>
     </div>
+    
     <div>
-      <button type="submit">Thêm Cửa Hàng</button>
+        <label for="phone_number">Số điện thoại:</label>
+        <input type="text" id="phone_number" name="phone_number" required>
     </div>
-  </form>
+    
+    <div>
+        <button type="submit" class="btn">Thêm Cửa Hàng</button>
+    </div>
+</form>
+  <script>
+async function geocodeAddress() {
+    const address = document.getElementById("address").value;
+    if (!address) {
+        alert("Hãy nhập địa chỉ!");
+        return;
+    }
+
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.length === 0) {
+        alert("Không tìm thấy tọa độ cho địa chỉ này!");
+        return;
+    }
+
+    const lat = data[0].lat;
+    const lng = data[0].lon;
+
+    // Gán vào form
+    document.getElementById("lat").value = lat;
+    document.getElementById("long").value = lng;
+
+    alert("Đã tìm được tọa độ!");
+}
+</script>
+
 </body>
 </html>
